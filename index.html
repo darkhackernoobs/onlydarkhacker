@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aviator Pro – Typeable Bet Amount</title>
+    <title>Aviator Pro – Fixed Balance 1000 BDT</title>
     <style>
         * {
             margin: 0;
@@ -328,7 +328,6 @@
             border: 1px solid #2c2d35;
         }
 
-        /* ইনপুট ফিল্ডটি এখন টাইপ করার উপযোগী এবং সুন্দর করা হয়েছে */
         .input-group input {
             width: 75px;
             background: transparent;
@@ -340,7 +339,6 @@
             outline: none;
         }
 
-        /* ক্রোম/সাফারি ব্রাউজারের ডিফল্ট অ্যারো হাইড করার জন্য */
         .input-group input::-webkit-outer-spin-button,
         .input-group input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -450,7 +448,7 @@
         <div class="logo">Aviator</div>
         <div class="right-controls">
             <button class="sound-btn" id="soundToggle" onclick="toggleSound(event)">🔊 Sound: ON</button>
-            <div class="balance">Balance: <span id="balance-amount">50,004.10</span> BDT</div>
+            <div class="balance">Balance: <span id="balance-amount">1,000.00</span> BDT</div>
         </div>
     </div>
 
@@ -510,7 +508,8 @@
 </div>
 
 <script>
-    let balance = 50004.10;
+    // ব্যালেন্স ৫০০০৪.১০ থেকে পরিবর্তন করে ১০০০ করে দেওয়া হলো
+    let balance = 1000.00;
     
     let bets = {
         1: { amount: 10.00, status: "idle" }, 
@@ -699,7 +698,6 @@
         }
     }
 
-    // প্লাস-মাইনাস বাটনে ক্লিক করার ফাংশন
     function changeBet(btnId, val) {
         let betObj = bets[btnId];
         if(betObj.status !== "idle") return; 
@@ -709,7 +707,6 @@
         document.getElementById(`sub-${btnId}`).innerText = `${betObj.amount.toFixed(2)} BDT`;
     }
 
-    // নিজে কিবোর্ড বা মোবাইলে টাইপ করে অ্যামাউন্ট বসানোর লাইভ ফাংশন
     function handleTypeBet(btnId) {
         let betObj = bets[btnId];
         if(betObj.status !== "idle") return; 
@@ -721,7 +718,6 @@
             betObj.amount = parsedVal;
             document.getElementById(`sub-${btnId}`).innerText = `${betObj.amount.toFixed(2)} BDT`;
         } else {
-            // যদি ইনপুট ফিল্ড খালি থাকে বা ৫ টাকার কম টাইপ করে, বাটনে ৫ দেখাবে সেফটির জন্য
             document.getElementById(`sub-${btnId}`).innerText = `5.00 BDT`;
         }
     }
@@ -731,7 +727,6 @@
         let btn = document.getElementById(`bet-btn-${btnId}`);
         let inputEl = document.getElementById(`bet-amount-${btnId}`);
 
-        // বেট লক সাবমিশনের সময় ফাইনাল সিকিউরিটি চেক
         let finalAmount = parseFloat(inputEl.value);
         if (isNaN(finalAmount) || finalAmount < 5) {
             finalAmount = 5;
@@ -757,7 +752,7 @@
 
             btn.className = "bet-btn";
             btn.innerHTML = `<div>BET</div><span class="btn-subtext">${betObj.amount.toFixed(2)} BDT</span>`;
-            inputEl.removeAttribute('disabled'); // বেট শেষ হলে ইনপুট ফিল্ড আবার আনলক হবে
+            inputEl.removeAttribute('disabled'); 
             return; 
         }
 
@@ -768,7 +763,7 @@
             }
             balance -= betObj.amount;
             updateBalanceDisplay();
-            inputEl.setAttribute('disabled', 'true'); // বেট ধরার পর টাইপিং লক হবে
+            inputEl.setAttribute('disabled', 'true'); 
 
             if (gameState === "waiting") {
                 betObj.status = "active";
@@ -784,7 +779,7 @@
             balance += betObj.amount;
             updateBalanceDisplay();
             betObj.status = "idle";
-            inputEl.removeAttribute('disabled'); // ক্যানসেল করলে টাইপিং আবার আনলক হবে
+            inputEl.removeAttribute('disabled'); 
             btn.className = "bet-btn";
             btn.innerHTML = `<div>BET</div><span class="btn-subtext">${betObj.amount.toFixed(2)} BDT</span>`;
         }
@@ -971,7 +966,7 @@
             let btn = document.getElementById(`bet-btn-${id}`);
             let inputEl = document.getElementById(`bet-amount-${id}`);
             
-            inputEl.removeAttribute('disabled'); // ক্র্যাশ হওয়ার পর টাইপিং আবার আনলক হবে
+            inputEl.removeAttribute('disabled'); 
 
             if (betObj.status === "active") {
                 addHistoryLog(`Bet ${id}`, betObj.amount.toFixed(2), finalCrashPoint.toFixed(2), false);
@@ -981,7 +976,6 @@
             
             if (betObj.status === "idle") {
                 btn.className = "bet-btn";
-                // যদি ফিল্ডে উল্টাপাল্টা টাইপ করা থাকে, রিসেট করে ভ্যালু বসাবে
                 let currentVal = parseFloat(inputEl.value);
                 if (isNaN(currentVal) || currentVal < 5) {
                     currentVal = 10;
